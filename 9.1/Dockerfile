@@ -59,8 +59,8 @@ RUN set -x \
     && python -c 'import maxminddb.extension; maxminddb.extension.Reader' \
     && apt-get purge -y --auto-remove make
 
-ENV SENTRY_PLUGINS_VERSION 9.1.2
-ENV SENTRY_VERSION 9.1.3
+ARG SENTRY_PLUGINS_VERSION=9.1.2
+ARG SENTRY_VERSION=9.1.3
 
 RUN set -x \
     && buildDeps=" \
