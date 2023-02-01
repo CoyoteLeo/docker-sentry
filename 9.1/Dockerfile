@@ -26,7 +26,6 @@ RUN set -x \
     && export GOSU_VERSION=1.11 \
     && fetchDeps=" \
         dirmngr \
-        gnupg \
         wget \
     " \
     && apt-get update && apt-get install -y --no-install-recommends $fetchDeps && rm -rf /var/lib/apt/lists/* \
@@ -40,14 +39,13 @@ RUN set -x \
     && export TINI_VERSION=0.18.0 \
     && fetchDeps=" \
         dirmngr \
-        gnupg \
         wget \
     " \
     && apt-get update && apt-get install -y --no-install-recommends $fetchDeps && rm -rf /var/lib/apt/lists/* \
     && wget -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini" \
     && chmod +x /usr/local/bin/tini \
     && tini -h \
-&& apt-get purge -y --auto-remove $fetchDeps
+	&& apt-get purge -y --auto-remove $fetchDeps
 
 # Support for RabbitMQ and GeoIP
 RUN set -x \
@@ -66,7 +64,6 @@ RUN set -x \
     && buildDeps=" \
         g++ \
         dirmngr \
-        gnupg \
         wget \
     " \
     && apt-get update && apt-get install -y --no-install-recommends $buildDeps && rm -rf /var/lib/apt/lists/* \
@@ -76,6 +73,8 @@ RUN set -x \
     && pip install \
         /usr/src/sentry/sentry-${SENTRY_VERSION}-py27-none-any.whl \
         /usr/src/sentry/sentry_plugins-${SENTRY_PLUGINS_VERSION}-py2.py3-none-any.whl \
+    && pip uninstall psycopg2 \
+	&& pip install --no-binary :all: psycopg2 \
     && sentry --help \
     && sentry plugins list \
     && rm -r /usr/src/sentry \
