@@ -59,7 +59,8 @@ RUN set -x \
     && python -c 'import maxminddb.extension; maxminddb.extension.Reader' \
     && apt-get purge -y --auto-remove make
 
-ENV SENTRY_VERSION 9.1.2
+ENV SENTRY_PLUGINS_VERSION 9.1.2
+ENV SENTRY_VERSION 9.1.3
 
 RUN set -x \
     && buildDeps=" \
@@ -70,11 +71,11 @@ RUN set -x \
     " \
     && apt-get update && apt-get install -y --no-install-recommends $buildDeps && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /usr/src/sentry \
-    && wget -O /usr/src/sentry/sentry-${SENTRY_VERSION}-py27-none-any.whl "https://github.com/getsentry/sentry/releases/download/${SENTRY_VERSION}/sentry-${SENTRY_VERSION}-py27-none-any.whl" \
-    && wget -O /usr/src/sentry/sentry_plugins-${SENTRY_VERSION}-py2.py3-none-any.whl "https://github.com/getsentry/sentry/releases/download/${SENTRY_VERSION}/sentry_plugins-${SENTRY_VERSION}-py2.py3-none-any.whl" \
+    && wget -O /usr/src/sentry/sentry-${SENTRY_VERSION}-py27-none-any.whl "https://github.com/CoyoteLeo/sentry/releases/download/${SENTRY_VERSION}/sentry-${SENTRY_VERSION}-py27-none-any.whl" \
+    && wget -O /usr/src/sentry/sentry_plugins-${SENTRY_PLUGINS_VERSION}-py2.py3-none-any.whl "https://github.com/getsentry/sentry/releases/download/${SENTRY_PLUGINS_VERSION}/sentry_plugins-${SENTRY_PLUGINS_VERSION}-py2.py3-none-any.whl" \
     && pip install \
         /usr/src/sentry/sentry-${SENTRY_VERSION}-py27-none-any.whl \
-        /usr/src/sentry/sentry_plugins-${SENTRY_VERSION}-py2.py3-none-any.whl \
+        /usr/src/sentry/sentry_plugins-${SENTRY_PLUGINS_VERSION}-py2.py3-none-any.whl \
     && sentry --help \
     && sentry plugins list \
     && rm -r /usr/src/sentry \
